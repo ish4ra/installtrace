@@ -5,8 +5,15 @@
 Capture before installation, after installation, and after uninstallation. Inspect file,
 registry, service and scheduled-task differences, then export an offline report.
 
-**Version 0.1.0 — working prototype, Windows validation pending.** The portable engine
-has automated tests. Live collectors require Windows 10/11 and Windows PowerShell 5.1.
+**Version 0.1.0 — tested preview.** Windows regression tests and the standalone executable
+smoke test passed on GitHub's Windows Server 2025 runner (Python 3.12.10). Consumer Windows
+10/11 validation remains recommended. Live collectors use Windows PowerShell 5.1.
+
+[Download InstallTrace.exe](https://github.com/ish4ra/installtrace/releases/download/v0.1.0/InstallTrace.exe)
+— Python is bundled; no Python installation is needed for the EXE.
+
+[Release and checksums](https://github.com/ish4ra/installtrace/releases/tag/v0.1.0) ·
+[Successful build](https://github.com/ish4ra/installtrace/actions/runs/35028145750)
 No administrator privilege is requested automatically. Use the same account and elevation
 for each capture; more restricted coverage is marked explicitly.
 
@@ -92,10 +99,11 @@ py -3 -m pip install pyinstaller==6.11.1
 py -3 -m PyInstaller --noconfirm --clean --onefile --windowed --name InstallTrace launch.py
 ```
 
-The output is `dist\InstallTrace.exe`. This is unsigned. A build has **not** been produced
-or tested in the Linux authoring environment. The included GitHub Actions workflow runs
-portable tests plus Windows collector integration tests, then uploads an unsigned EXE
-artifact only if the tests pass. It does not automatically publish a release.
+The output is `dist\InstallTrace.exe`. This is unsigned. The included GitHub Actions workflow
+runs portable tests plus Windows collector integration tests, builds the EXE, and tests the
+actual executable before uploading artifacts. A successful main-branch push publishes the
+initial v0.1.0 preview if that release does not already exist; existing release assets are
+never overwritten. The v0.1.0 EXE has now been built and smoke-tested on the Windows runner.
 
 ## Publish your repository
 
@@ -138,4 +146,4 @@ then launches the actual EXE with `self-test --out dist/smoke-test.json`. The sm
 checks the desktop demo and leftovers view, captures only a temporary folder, and checks
 service/task collection. It does not install software or alter system configuration.
 A successful run writes SHA256SUMS.txt beside the EXE. The GitHub workflow uses this same
-script. This pipeline has been prepared but has not yet executed on a Windows runner.
+script. This pipeline passed on the Windows runner; see VALIDATION.md for the exact build evidence.

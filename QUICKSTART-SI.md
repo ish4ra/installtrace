@@ -1,3 +1,12 @@
+# Standalone EXE එක දැන් තිබෙනවා
+
+[InstallTrace.exe download කරන්න](https://github.com/ish4ra/installtrace/releases/download/v0.1.0/InstallTrace.exe).
+EXE එක සඳහා Python install කරන්න අවශ්‍ය නැහැ. Windows CI tests 17ක් සහ executable
+GUI/capture smoke test pass වී ඇත. පරීක්ෂා කළ runner එක Windows Server 2025 යි;
+ඔබේ Windows 10/11 PC එකේ මුලින් Load demo ඔබා බලන්න. මෙය unsigned preview එකකි.
+
+පහත උපදෙස් source code එකෙන් run කිරීමටයි.
+
 # InstallTrace — පටන් ගන්න
 
 මෙය Windows සඳහා ලියූ මුල් prototype එකකි. Source code එක run කරන්න Python 3.10+
@@ -34,8 +43,6 @@ Unknown installers පරීක්ෂා කරන්න disposable VM එකක
 **Export report** මඟින් offline HTML report එකක් ගන්න පුළුවන්. Report වල personal paths,
 registry values සහ command arguments තිබිය හැකි නිසා share කිරීමට කලින් බලන්න.
 
-Portable tests 16ක් authoring environment එකේ pass වුණා. Windows live capture සහ GUI
-මෙම Linux environment එකේ run කරලා validate කර නැහැ. Windows integration test සහ
-GitHub Actions EXE build workflow ඇතුළත් කර තිබෙනවා; ඒවා තවම GitHub එකේ run වී නැහැ.
+Windows build සහ පරීක්ෂණ තොරතුරු `VALIDATION.md` එකේ තියෙනවා.
 
 වැඩි විස්තර, commands සහ GitHub upload steps `README.md` එකේ තියෙනවා.
