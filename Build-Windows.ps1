@@ -3,7 +3,7 @@ Set-Location $PSScriptRoot
 if (-not (Get-Command py -ErrorAction SilentlyContinue)) {
     throw 'Install Python 3.12 for Windows with the Python Launcher and Tcl/Tk, then run this script again.'
 }
-& py -3 -m venv .venv-build
+& py -3.12 -m venv .venv-build
 if ($LASTEXITCODE -ne 0) { throw 'Could not create the build environment.' }
 $python = Join-Path $PSScriptRoot '.venv-build\Scripts\python.exe'
 & $python -m pip install pyinstaller==6.11.1

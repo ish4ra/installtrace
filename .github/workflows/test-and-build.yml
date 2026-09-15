@@ -39,3 +39,25 @@ jobs:
             dist/SHA256SUMS.txt
             dist/smoke-test.json
           if-no-files-found: error
+
+  publish:
+    needs: windows-build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: InstallTrace-Windows-x64-unsigned
+          path: release
+      - name: Publish initial tested preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v0.1.0 >/dev/null 2>&1; then
+            echo 'v0.1.0 already exists; leaving published binaries unchanged.'
+          else
+            gh release create v0.1.0 release/InstallTrace.exe release/SHA256SUMS.txt release/smoke-test.json --target "$GITHUB_SHA" --prerelease --title "InstallTrace 0.1.0 Preview" --notes-file RELEASE-NOTES.md
+          fi
