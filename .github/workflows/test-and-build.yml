@@ -1,0 +1,41 @@
+name: Test and Windows build
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -v
+      - run: python -m installtrace demo --out demo-report.html
+  windows-build:
+    needs: test
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and smoke-test standalone executable
+        shell: pwsh
+        run: ./Build-Windows.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: InstallTrace-Windows-x64-unsigned
+          path: |
+            dist/InstallTrace.exe
+            dist/SHA256SUMS.txt
+            dist/smoke-test.json
+          if-no-files-found: error
