@@ -52,12 +52,12 @@ jobs:
         with:
           name: InstallTrace-Windows-x64-unsigned
           path: release
-      - name: Publish initial tested preview
+      - name: Publish v0.2.0 tested preview
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view v0.1.0 >/dev/null 2>&1; then
-            echo 'v0.1.0 already exists; leaving published binaries unchanged.'
+          if gh release view v0.2.0 >/dev/null 2>&1; then
+            echo 'v0.2.0 already exists; leaving published binaries unchanged.'
           else
-            gh release create v0.1.0 release/InstallTrace.exe release/SHA256SUMS.txt release/smoke-test.json --target "$GITHUB_SHA" --prerelease --title "InstallTrace 0.1.0 Preview" --notes-file RELEASE-NOTES.md
+            gh release create v0.2.0 release/InstallTrace.exe release/SHA256SUMS.txt release/smoke-test.json --target "$GITHUB_SHA" --prerelease --title "InstallTrace 0.2.0 — Midnight Console" --notes-file RELEASE-NOTES.md
           fi
