@@ -5,17 +5,29 @@
 Capture before installation, after installation, and after uninstallation. Inspect file,
 registry, service and scheduled-task differences, then export an offline report.
 
-**Version 0.1.0 — tested preview.** Windows regression tests and the standalone executable
-smoke test passed on GitHub's Windows Server 2025 runner (Python 3.12.10). Consumer Windows
-10/11 validation remains recommended. Live collectors use Windows PowerShell 5.1.
+**Version 0.2.0 — Midnight Console preview.** The desktop interface has been redesigned with
+a modern dark observability-console layout while preserving the existing read-only capture,
+comparison, leftover detection and export behavior. Windows regression tests and the standalone
+executable smoke test are run automatically before the release is published.
 
-[Download InstallTrace.exe](https://github.com/ish4ra/installtrace/releases/download/v0.1.0/InstallTrace.exe)
+[Download InstallTrace.exe](https://github.com/ish4ra/installtrace/releases/download/v0.2.0/InstallTrace.exe)
 — Python is bundled; no Python installation is needed for the EXE.
 
-[Release and checksums](https://github.com/ish4ra/installtrace/releases/tag/v0.1.0) ·
-[Successful build](https://github.com/ish4ra/installtrace/actions/runs/35028145750)
+[Release and checksums](https://github.com/ish4ra/installtrace/releases/tag/v0.2.0) ·
+[Build workflow](https://github.com/ish4ra/installtrace/actions/workflows/test-and-build.yml)
 No administrator privilege is requested automatically. Use the same account and elevation
 for each capture; more restricted coverage is marked explicitly.
+
+## Version 0.2 UI refresh
+
+- Midnight Console dark theme with a cyan/teal observability accent system.
+- Dedicated scan-scope and capture-profile panel.
+- Three snapshot cards with READY / PARTIAL / SCANNING state chips.
+- Redesigned action buttons and comparison command bar.
+- Cleaner search/category/change-type filters.
+- Color-coded added, modified, removed and uncertain result rows.
+- Dedicated inspector panel for before/after evidence and JSON details.
+- Improved capture, demo, coverage and comparison status feedback.
 
 ## Start on Windows
 
@@ -23,7 +35,7 @@ for each capture; more restricted coverage is marked explicitly.
 2. Install Python 3.10 or later from https://www.python.org/downloads/windows/ with Tcl/Tk
    and the Python launcher enabled (the normal Python installer includes these).
 3. Double-click **Start-InstallTrace.cmd**, or run `py -3 -m installtrace` from this folder.
-4. Click **Load demo** to explore synthetic changes without scanning.
+4. Click **LOAD DEMO** to explore synthetic changes without scanning.
 
 No pip dependencies are needed for the source app. Linux/macOS can compare snapshots and
 create reports; the desktop UI also needs a working Tk installation/display there.
@@ -99,11 +111,11 @@ py -3 -m pip install pyinstaller==6.11.1
 py -3 -m PyInstaller --noconfirm --clean --onefile --windowed --name InstallTrace launch.py
 ```
 
-The output is `dist\InstallTrace.exe`. This is unsigned. The included GitHub Actions workflow
-runs portable tests plus Windows collector integration tests, builds the EXE, and tests the
-actual executable before uploading artifacts. A successful main-branch push publishes the
-initial v0.1.0 preview if that release does not already exist; existing release assets are
-never overwritten. The v0.1.0 EXE has now been built and smoke-tested on the Windows runner.
+The output is `dist\InstallTrace.exe`. This is unsigned. `Build-Windows.ps1` creates an
+isolated Python 3.12 build environment, runs the regression tests, builds the EXE and then
+launches the actual executable in self-test mode. GitHub Actions runs the same pipeline and
+uploads the EXE, SHA256SUMS.txt and smoke-test.json as an artifact. A successful push to
+`main` publishes the tested **v0.2.0** preview when that release does not already exist.
 
 ## Publish your repository
 
@@ -124,7 +136,7 @@ Inspect files before committing: never commit captures from a real machine. The
 
 - `installtrace/collect.py`: read-only native collectors and cancellation
 - `installtrace/core.py`: validation, comparison, leftover candidates, offline HTML
-- `installtrace/ui.py`: threaded Tk desktop app
+- `installtrace/ui.py`: threaded dark desktop observability UI
 - `tests/`: portable regression tests and Windows integration test
 
 Next: validate on actual Windows machines; Authenticode inspection; narrower per-path
@@ -146,4 +158,4 @@ then launches the actual EXE with `self-test --out dist/smoke-test.json`. The sm
 checks the desktop demo and leftovers view, captures only a temporary folder, and checks
 service/task collection. It does not install software or alter system configuration.
 A successful run writes SHA256SUMS.txt beside the EXE. The GitHub workflow uses this same
-script. This pipeline passed on the Windows runner; see VALIDATION.md for the exact build evidence.
+script and only publishes the release after the Windows build job succeeds.
